@@ -1,13 +1,10 @@
 import telebot
-import requests
 import random
 import os
-from prometheus_client import start_http_server, Counter
-
-from flask import Flask
 import threading
+from flask import Flask
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 
-# Создаём Flask приложение для health check от Render
 flask_app = Flask(__name__)
 
 @flask_app.route('/')
@@ -18,21 +15,27 @@ def health_check():
 def health():
     return {"status": "healthy"}, 200
 
-# Запускаем Flask в отдельном потоке
-def run_flask():
-    flask_app.run(host='0.0.0.0', port=8000)
+@flask_app.route('/metrics')
+def metrics():
+    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
-# Запускаем Flask перед ботом
+
+def run_flask():
+    port = int(os.getenv('PORT', 8000))
+    flask_app.run(host='0.0.0.0', port=port)
+
 threading.Thread(target=run_flask, daemon=True).start()
+
 
 VISITS_COUNTER = Counter('bot_visits_total', 'Total bot commands used')
 
 token = os.getenv('BOT_TOKEN')
 
 if not token:
-    raise ValueError("BOT_TOKEN не найден! Установите переменную окружения BOT_TOKEN")
+    raise ValueError("BOT_TOKEN не найден!")
 
 bot = telebot.TeleBot(token)
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -100,5 +103,7 @@ def send_fact(message):
     ]
     bot.send_message(message.chat.id, f"🧠 А ты знал, что:\n\n{random.choice(facts)}")
 
-start_http_server(8001)
-bot.polling(none_stop=True)
+
+
+if __name__ == "__main__":
+    bot.polling(none_stop=True)
