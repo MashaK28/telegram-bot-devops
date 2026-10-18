@@ -20,7 +20,7 @@ def health():
 
 # Запускаем Flask в отдельном потоке
 def run_flask():
-    flask_app.run(host='0.0.0.0', port=8001)
+    flask_app.run(host='0.0.0.0', port=8000)
 
 # Запускаем Flask перед ботом
 threading.Thread(target=run_flask, daemon=True).start()
@@ -100,5 +100,5 @@ def send_fact(message):
     ]
     bot.send_message(message.chat.id, f"🧠 А ты знал, что:\n\n{random.choice(facts)}")
 
-start_http_server(8000)
+start_http_server(8001)
 bot.polling(none_stop=True)
