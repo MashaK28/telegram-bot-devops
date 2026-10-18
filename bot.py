@@ -3,7 +3,9 @@ import random
 import os
 import threading
 from flask import Flask
-from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
+import psutil
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST, Gauge
+
 
 flask_app = Flask(__name__)
 
@@ -28,6 +30,10 @@ threading.Thread(target=run_flask, daemon=True).start()
 
 
 VISITS_COUNTER = Counter('bot_visits_total', 'Total bot commands used')
+
+DISK_USAGE = Gauge('bot_disk_usage_bytes', 'Disk usage in bytes')
+DISK_TOTAL = Gauge('bot_disk_total_bytes', 'Total disk space in bytes')
+DISK_FREE = Gauge('bot_disk_free_bytes', 'Free disk space in bytes')
 
 token = os.getenv('BOT_TOKEN')
 
@@ -103,7 +109,17 @@ def send_fact(message):
     ]
     bot.send_message(message.chat.id, f"🧠 А ты знал, что:\n\n{random.choice(facts)}")
 
-
+def update_resource_metrics():
+    while True:
+        try:
+            disk = psutil.disk_usage('/')
+            DISK_USAGE.set(disk.used)
+            DISK_TOTAL.set(disk.total)
+            DISK_FREE.set(disk.free)
+        except Exception as e:
+            print(f"Ошибка обновления метрик диска: {e}")
+        time.sleep(15)
+threading.Thread(target=update_resource_metrics, daemon=True).start()
 
 if __name__ == "__main__":
     bot.polling(none_stop=True)
