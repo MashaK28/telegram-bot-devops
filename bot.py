@@ -20,7 +20,7 @@ def health():
 
 # Запускаем Flask в отдельном потоке
 def run_flask():
-    flask_app.run(host='0.0.0.0', port=8000)
+    flask_app.run(host='0.0.0.0', port=8001)
 
 # Запускаем Flask перед ботом
 threading.Thread(target=run_flask, daemon=True).start()
