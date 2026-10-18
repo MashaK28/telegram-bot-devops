@@ -3,9 +3,9 @@ global:
 
 scrape_configs:
   - job_name: 'telegram_bot'
+    metrics_path: '/metrics'
+    scheme: 'https'
     static_configs:
-      - targets: ['bot:8000'] 
+      - targets: ['telegram-bot-9l6l.onrender.com'] 
 
-  - job_name: 'cadvisor'
-    static_configs:
-      - targets: ['cadvisor:8080']
+
