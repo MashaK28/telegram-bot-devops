@@ -27,7 +27,11 @@ threading.Thread(target=run_flask, daemon=True).start()
 
 VISITS_COUNTER = Counter('bot_visits_total', 'Total bot commands used')
 
-token = '5781307155:AAGBWvxdItjD_Vmcy-0dgcQP_jkfZUaHW5k'
+token = os.getenv('BOT_TOKEN')
+
+if not token:
+    raise ValueError("BOT_TOKEN не найден! Установите переменную окружения BOT_TOKEN")
+
 bot = telebot.TeleBot(token)
 
 @bot.message_handler(commands=['start'])
