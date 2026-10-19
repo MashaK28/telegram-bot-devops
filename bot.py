@@ -123,11 +123,12 @@ def update_resource_metrics():
 threading.Thread(target=update_resource_metrics, daemon=True).start()
 
 if __name__ == "__main__":
+    print("Бот запущен! Метрики доступны по пути /metrics на порту 8000")
     while True:
-    try:
-        print("Запуск polling...")
-        bot.polling(none_stop=True, timeout=60)
-    except Exception as e:
-        print(f"Ошибка polling: {e}")
-        print("Перезапуск через 5 секунд")
-        time.sleep(5)
+        try:
+            print("Запуск polling...")
+            bot.polling(none_stop=True, timeout=60)
+        except Exception as e:
+            print(f"Ошибка polling: {e}")
+            print("Перезапуск через 5 секунд...")
+            time.sleep(5)
