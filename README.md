@@ -2,6 +2,8 @@
 
 ## 1. Ссылки
 
+https://telegram-bot-9l6l.onrender.com - ссылка для запуска бота 
+
 https://t.me/noMMMber1_bot - ссылка на тг бота
 
 https://prometheus-f0dl.onrender.com/query - prometheus для отслеживания ресурсов, хэлсчека, бизнес метрик
