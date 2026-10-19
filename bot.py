@@ -5,6 +5,7 @@ import threading
 from flask import Flask
 import psutil
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST, Gauge
+import time
 
 
 flask_app = Flask(__name__)
