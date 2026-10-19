@@ -2,7 +2,7 @@
 
 ## 1. Ссылки
 
-https://telegram-bot-9l6l.onrender.com - ссылка для запуска бота 
+https://telegram-bot-9l6l.onrender.com - ссылка для запуска бота (на случай если "упадёт" сервер)
 
 https://t.me/noMMMber1_bot - ссылка на тг бота
 
